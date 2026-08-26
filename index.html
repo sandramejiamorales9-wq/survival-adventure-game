@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survival Adventure Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            background: #2a2a2a;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            color: white;
+            font-size: 14px;
+            z-index: 10;
+        }
+        
+        .stat {
+            background: rgba(0,0,0,0.7);
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .stat-bar {
+            width: 100px;
+            height: 20px;
+            background: #444;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 3px;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            background: #4CAF50;
+            transition: width 0.3s;
+        }
+        
+        .health .stat-fill {
+            background: #f44336;
+        }
+        
+        .hunger .stat-fill {
+            background: #FF9800;
+        }
+        
+        .energy .stat-fill {
+            background: #2196F3;
+        }
+        
+        #actions {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+        
+        .action-btn {
+            background: rgba(33, 150, 243, 0.8);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: rgba(33, 150, 243, 1);
+        }
+        
+        .action-btn:active {
+            background: rgba(21, 101, 192, 1);
+        }
+        
+        .action-btn.disabled {
+            background: rgba(100, 100, 100, 0.5);
+            cursor: not-allowed;
+        }
+        
+        #info-panel {
+            position: absolute;
+            top: 100px;
+            left: 10px;
+            background: rgba(0,0,0,0.9);
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 5px;
+            max-width: 300px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+            z-index: 10;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <div id="ui">
+            <div class="stat health">
+                <div>❤️ Salud</div>
+                <div class="stat-bar">
+                    <div class="stat-fill" id="health-bar" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="stat hunger">
+                <div>🍖 Hambre</div>
+                <div class="stat-bar">
+                    <div class="stat-fill" id="hunger-bar" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="stat energy">
+                <div>⚡ Energía</div>
+                <div class="stat-bar">
+                    <div class="stat-fill" id="energy-bar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="info-panel">
+            <div id="info-text"></div>
+        </div>
+        
+        <div id="actions">
+            <button class="action-btn" id="collect-btn">🌲 Recolectar</button>
+            <button class="action-btn" id="fish-btn">🎣 Pescar</button>
+            <button class="action-btn" id="craft-btn">🔨 Crafting</button>
+            <button class="action-btn" id="rest-btn">😴 Descansar</button>
+            <button class="action-btn" id="hunt-btn">🏹 Cazar</button>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/environment.js"></script>
+    <script src="js/interactions.js"></script>
+</body>
+</html>
