@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survival Adventure Game</title>
+    <title>Survival Adventure Game - 3D</title>
     <style>
         * {
             margin: 0;
@@ -18,142 +18,211 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow: hidden;
         }
         
         #game-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
-            background: #2a2a2a;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            max-width: 1200px;
+            height: 100vh;
+            background: #000;
         }
         
-        canvas {
+        #canvas {
             display: block;
             width: 100%;
-            height: auto;
+            height: 100%;
         }
         
         #ui {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
+            top: 20px;
+            left: 20px;
+            right: 20px;
             color: white;
             font-size: 14px;
             z-index: 10;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         
         .stat {
-            background: rgba(0,0,0,0.7);
-            padding: 8px 12px;
-            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat.health {
+            border-left-color: #f44336;
+        }
+        
+        .stat.hunger {
+            border-left-color: #FF9800;
+        }
+        
+        .stat.energy {
+            border-left-color: #2196F3;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #aaa;
             margin-bottom: 5px;
-            display: inline-block;
-            margin-right: 10px;
         }
         
         .stat-bar {
-            width: 100px;
-            height: 20px;
-            background: #444;
-            border-radius: 3px;
+            width: 150px;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
             overflow: hidden;
-            margin-top: 3px;
         }
         
         .stat-fill {
             height: 100%;
             background: #4CAF50;
             transition: width 0.3s;
+            width: 100%;
         }
         
         .health .stat-fill {
-            background: #f44336;
+            background: linear-gradient(90deg, #f44336, #FF6B6B);
         }
         
         .hunger .stat-fill {
-            background: #FF9800;
+            background: linear-gradient(90deg, #FF9800, #FFB74D);
         }
         
         .energy .stat-fill {
-            background: #2196F3;
+            background: linear-gradient(90deg, #2196F3, #64B5F6);
         }
         
         #actions {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            right: 10px;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
             z-index: 10;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         
         .action-btn {
-            background: rgba(33, 150, 243, 0.8);
+            background: linear-gradient(135deg, #2196F3, #1976D2);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-right: 5px;
-            margin-bottom: 5px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 12px;
-            transition: background 0.3s;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
         }
         
         .action-btn:hover {
-            background: rgba(33, 150, 243, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.5);
         }
         
         .action-btn:active {
-            background: rgba(21, 101, 192, 1);
-        }
-        
-        .action-btn.disabled {
-            background: rgba(100, 100, 100, 0.5);
-            cursor: not-allowed;
+            transform: translateY(0);
         }
         
         #info-panel {
             position: absolute;
-            top: 100px;
-            left: 10px;
-            background: rgba(0,0,0,0.9);
+            top: 120px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.95);
             color: #4CAF50;
-            padding: 15px;
-            border-radius: 5px;
-            max-width: 300px;
-            max-height: 200px;
-            overflow-y: auto;
-            font-size: 12px;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #4CAF50;
+            max-width: 350px;
+            font-size: 13px;
             z-index: 10;
             display: none;
+            backdrop-filter: blur(10px);
+            line-height: 1.6;
+        }
+        
+        #crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .crosshair-line {
+            position: absolute;
+            background: rgba(76, 175, 80, 0.6);
+        }
+        
+        .crosshair-h {
+            width: 20px;
+            height: 1px;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .crosshair-v {
+            width: 1px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%);
+        }
+        
+        #fps {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #4CAF50;
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 12px;
+            border-radius: 4px;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
     <div id="game-container">
-        <canvas id="gameCanvas"></canvas>
+        <canvas id="canvas"></canvas>
+        
+        <div id="crosshair">
+            <div class="crosshair-line crosshair-h"></div>
+            <div class="crosshair-line crosshair-v"></div>
+        </div>
         
         <div id="ui">
             <div class="stat health">
-                <div>❤️ Salud</div>
+                <div class="stat-label">❤️ SALUD</div>
                 <div class="stat-bar">
                     <div class="stat-fill" id="health-bar" style="width: 100%"></div>
                 </div>
             </div>
             
             <div class="stat hunger">
-                <div>🍖 Hambre</div>
+                <div class="stat-label">🍖 HAMBRE</div>
                 <div class="stat-bar">
                     <div class="stat-fill" id="hunger-bar" style="width: 100%"></div>
                 </div>
             </div>
             
             <div class="stat energy">
-                <div>⚡ Energía</div>
+                <div class="stat-label">⚡ ENERGÍA</div>
                 <div class="stat-bar">
                     <div class="stat-fill" id="energy-bar" style="width: 100%"></div>
                 </div>
@@ -164,6 +233,8 @@
             <div id="info-text"></div>
         </div>
         
+        <div id="fps">FPS: 60</div>
+        
         <div id="actions">
             <button class="action-btn" id="collect-btn">🌲 Recolectar</button>
             <button class="action-btn" id="fish-btn">🎣 Pescar</button>
@@ -173,9 +244,13 @@
         </div>
     </div>
 
-    <script src="js/game.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/environment.js"></script>
-    <script src="js/interactions.js"></script>
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Game Scripts -->
+    <script src="js/3d-game.js"></script>
+    <script src="js/3d-player.js"></script>
+    <script src="js/3d-environment.js"></script>
+    <script src="js/3d-interactions.js"></script>
 </body>
 </html>
