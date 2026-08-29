@@ -109,8 +109,8 @@
             z-index: 10;
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         .action-btn {
@@ -129,6 +129,7 @@
         .action-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(33, 150, 243, 0.5);
+            background: linear-gradient(135deg, #2196F3, #0b7dda);
         }
         
         .action-btn:active {
@@ -195,6 +196,34 @@
             border-radius: 4px;
             z-index: 10;
         }
+        
+        #controls-info {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #4CAF50;
+            font-size: 11px;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-line {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        
+        .control-key {
+            background: rgba(76, 175, 80, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -236,11 +265,41 @@
         <div id="fps">FPS: 60</div>
         
         <div id="actions">
-            <button class="action-btn" id="collect-btn">🌲 Recolectar</button>
-            <button class="action-btn" id="fish-btn">🎣 Pescar</button>
-            <button class="action-btn" id="craft-btn">🔨 Crafting</button>
-            <button class="action-btn" id="rest-btn">😴 Descansar</button>
-            <button class="action-btn" id="hunt-btn">🏹 Cazar</button>
+            <button class="action-btn" id="collect-btn">🌲 Recolectar (Q)</button>
+            <button class="action-btn" id="craft-btn">🔨 Crafting (C)</button>
+            <button class="action-btn" id="rest-btn">😴 Descansar (Z)</button>
+            <button class="action-btn" id="hunt-btn">🏹 Cazar (F)</button>
+        </div>
+        
+        <div id="controls-info">
+            <div class="control-line">
+                <span>Movimiento:</span>
+                <span class="control-key">W A S D</span>
+            </div>
+            <div class="control-line">
+                <span>Saltar:</span>
+                <span class="control-key">ESPACIO</span>
+            </div>
+            <div class="control-line">
+                <span>Correr:</span>
+                <span class="control-key">SHIFT</span>
+            </div>
+            <div class="control-line">
+                <span>Disparar:</span>
+                <span class="control-key">CLICK</span>
+            </div>
+            <div class="control-line">
+                <span>Apuntar:</span>
+                <span class="control-key">RMB</span>
+            </div>
+            <div class="control-line">
+                <span>Recargar:</span>
+                <span class="control-key">R</span>
+            </div>
+            <div class="control-line">
+                <span>Mirar:</span>
+                <span class="control-key">RATÓN</span>
+            </div>
         </div>
     </div>
 
